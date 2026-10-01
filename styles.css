@@ -321,6 +321,28 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.borrar-marca {
+  justify-self: start;
+  padding: 9px 16px;
+  border: 1px solid var(--regla);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tinta-suave);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.borrar-marca:hover {
+  color: var(--tinta-suelo);
+  border-color: var(--tinta-suave);
+  background: var(--suelo-veta);
+}
+
 .controles h2 {
   margin: 0 0 10px;
   font-size: 11px;
