@@ -60,6 +60,18 @@
     [0, 1, 1, 1, 0],
   ];
 
+  // Mismo contorno del sprite anterior: la manzana dorada se dibuja hueca.
+  const MANZANA_HUECA = [
+    [0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0],
+  ];
+
+  const MANZANAS_POR_DORADA = 7;
+  const esDorada = (comidas) => (comidas + 1) % MANZANAS_POR_DORADA === 0;
+
   const DIRS = {
     arriba: { x: 0, y: -1 },
     abajo: { x: 0, y: 1 },
@@ -152,9 +164,10 @@
     cuerpo.unshift(cabeza);
 
     if (cabeza.x === comida.x && cabeza.y === comida.y) {
+      const dorada = esDorada(manzanas);
       manzanas += 1;
       nivel = Math.floor(manzanas / MANZANAS_POR_NIVEL) + 1;
-      puntos += 10 * nivel;
+      puntos += 10 * nivel * (dorada ? 3 : 1);
       tickMs = Math.max(MS_MINIMO, MS_INICIAL - manzanas * MS_POR_MANZANA);
       comida = celdaLibre();
     } else {
@@ -213,15 +226,17 @@
     ctx.fillRect(0, 0, 2, H);
     ctx.fillRect(W - 2, 0, 2, H);
 
-    // manzana: parpadea salvo que el visor pida calma
-    const visible = quieto.matches || estado !== "jugando" || Math.floor(ahora / 420) % 2 === 0;
+    // manzana: la dorada siempre visible; la común parpadea salvo calma
+    const dorada = esDorada(manzanas);
+    const visible = dorada || quieto.matches || estado !== "jugando" || Math.floor(ahora / 420) % 2 === 0;
     if (visible) {
       const px = 4;
       const ox = comida.x * CELDA + 2;
       const oy = comida.y * CELDA + 2;
+      const sprite = dorada ? MANZANA_HUECA : MANZANA;
       for (let f = 0; f < 5; f += 1) {
         for (let c = 0; c < 5; c += 1) {
-          if (MANZANA[f][c]) punto(ox + c * px, oy + f * px, px, px);
+          if (sprite[f][c]) punto(ox + c * px, oy + f * px, px, px);
         }
       }
     }
