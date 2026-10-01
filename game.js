@@ -87,7 +87,7 @@
   };
 
   let cuerpo, rumbo, cola, comida;
-  let puntos, manzanas, nivel, tickMs, mejor;
+  let puntos, manzanas, nivel, tickMs, mejor, pasos;
   let estado;              // "listo" | "jugando" | "pausa" | "fin"
   let acumulado, anterior, finDesde;
 
@@ -127,6 +127,7 @@
     cola = [];
     puntos = 0;
     manzanas = 0;
+    pasos = 0;
     nivel = 1;
     tickMs = MS_INICIAL;
     acumulado = 0;
@@ -162,14 +163,18 @@
     }
 
     cuerpo.unshift(cabeza);
+    pasos += 1;
 
     if (cabeza.x === comida.x && cabeza.y === comida.y) {
       const dorada = esDorada(manzanas);
+      const enRacha = manzanas > 0 && pasos <= 15;
+      const multiplicador = (dorada ? 3 : 1) * (enRacha ? 2 : 1);
       manzanas += 1;
       nivel = Math.floor(manzanas / MANZANAS_POR_NIVEL) + 1;
-      puntos += 10 * nivel * (dorada ? 3 : 1);
+      puntos += 10 * nivel * multiplicador;
       tickMs = Math.max(MS_MINIMO, MS_INICIAL - manzanas * MS_POR_MANZANA);
       comida = celdaLibre();
+      pasos = 0;
     } else {
       cuerpo.pop();
     }
