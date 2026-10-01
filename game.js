@@ -332,6 +332,13 @@
   document.getElementById("btn-pausa").addEventListener("click", alternarPausa);
   document.getElementById("btn-ok").addEventListener("click", botonPrincipal);
 
+  document.getElementById("btn-borrar-mejor").addEventListener("click", () => {
+    if (!window.confirm("¿Borrar la mejor marca?")) return;
+    mejor = 0;
+    guardarRecord(0);
+    pintarDatos();
+  });
+
   // Deslizar sobre la pantalla, para jugar con el pulgar.
   let origen = null;
   pantalla.addEventListener("pointerdown", (e) => { origen = { x: e.clientX, y: e.clientY }; });
